@@ -16,6 +16,7 @@ technique → code → revue → recette → preview**.
 | [`senior-developer`](agents/senior-developer.md) | Challenge la SFD, rédige la STD, implémente, teste, livre une branche | Une SFD validée | `docs/specs/STD-NN-*.md`, code, tests, commits |
 | [`tech-lead`](agents/tech-lead.md) | Garant des bonnes pratiques : sécurité, architecture, tests, lisibilité | Un diff, une branche, une PR | Rapport classé par sévérité + verdict GO / NO-GO |
 | [`qa-tester`](agents/qa-tester.md) | Plan de test tracé sur les critères d'acceptation, tests automatisés, recette | SFD + implémentation | `docs/tests/PT-NN-*.md`, tests, anomalies qualifiées |
+| [`preview-runner`](agents/preview-runner.md) | Lance la preview locale, vérifie les accès et l'état réel des écrans | Une branche à montrer | URL, comptes vérifiés, écrans vides, anomalies, commande d'arrêt |
 
 ### Skills (`skills/`)
 
@@ -26,9 +27,9 @@ technique → code → revue → recette → preview**.
 | [`revue-de-code`](skills/revue-de-code/SKILL.md) | Grille de revue par axes, sévérités, vigilance FastAPI/React | tech-lead, senior-developer |
 | [`strategie-de-test`](skills/strategie-de-test/SKILL.md) | Pyramide, matrice de droits, patterns pytest/httpx et Vitest, plan de test | qa-tester, senior-developer |
 | [`somanager-cockpit`](skills/somanager-cockpit/SKILL.md) | Connaissance projet : architecture, conventions, charte, état des lieux | tous, sur ce dépôt |
-| [`preview-locale`](skills/preview-locale/SKILL.md) | Lancer, peupler et recetter une preview ; scénario de démonstration | tous, avant démonstration |
+| [`preview-locale`](skills/preview-locale/SKILL.md) | Lancer, peupler et recetter une preview ; scénario de démonstration | preview-runner |
 
-Les quatre agents et les quatre premières skills sont **génériques** : réutilisables sur
+Les cinq agents et les cinq premières skills sont **génériques** : réutilisables sur
 tout projet SOMA. La connaissance spécifique à un dépôt est isolée dans une skill projet
 (ici `somanager-cockpit`) — c'est le seul fichier à dupliquer et adapter pour un nouveau projet.
 
@@ -53,6 +54,10 @@ tout projet SOMA. La connaissance spécifique à un dépôt est isolée dans une
                  │                               ▼
                  │                     ┌───────────────────┐
                  └─────────────────────┤     qa-tester     │  recette
+                                       └─────────┬─────────┘
+                                                 │
+                                       ┌─────────▼─────────┐
+                                       │  preview-runner   │  démonstration
                                        └───────────────────┘
 ```
 
@@ -65,6 +70,8 @@ Règles de la boucle :
 4. Le **testeur ne corrige pas le code** : il qualifie des anomalies reproductibles.
 5. Une question sans réponse ne bloque jamais : elle devient une **hypothèse explicite**,
    tracée et visible jusqu'à sa levée.
+6. Le **preview-runner ne corrige rien** : il lance, vérifie et rend compte. Un écran vide
+   ou une entrée inerte remonte au BA comme décision de périmètre, pas comme détail technique.
 
 ### Point d'attention — les questions en mode sous-agent
 
@@ -131,4 +138,4 @@ champ qui pilote le déclenchement automatique. Le modifier change le comporteme
 1. Dupliquer `skills/somanager-cockpit/` sous le nom du nouveau dépôt.
 2. Réécrire `SKILL.md` (architecture, rôles, chaîne de qualité, pièges) et les
    `references/` (patterns back, patterns front, état des lieux).
-3. Ne rien toucher aux quatre agents : ils lisent la skill projet.
+3. Ne rien toucher aux cinq agents : ils lisent la skill projet.
