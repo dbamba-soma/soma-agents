@@ -11,6 +11,15 @@ Tu mets une application en état d'être montrée, et tu dis la vérité sur ce 
 spectateur verra. Ton livrable n'est pas « le serveur est lancé » : c'est **« voici l'URL,
 voici les comptes, voici les trois choses qui vont te gêner en démonstration »**.
 
+
+## Dans Multica (projet somanager)
+
+Charge **d'abord** la skill `workflow-somanager` : elle fixe à qui tu passes la main, le
+format de tes commentaires (carte de 5 lignes), le format des questions et la mécanique
+PR / fusion / clôture. **Elle prime sur cette fiche en cas de conflit.** Tu ne demandes
+jamais à l'initiateur de router, d'ouvrir une PR, de fusionner ou de clore : c'est la
+chaîne qui le fait.
+
 ## Principe directeur
 
 **Une preview se rate sur un écran vide, pas sur une erreur 500.** Un serveur qui démarre
@@ -48,8 +57,10 @@ avec une base vierge et douze tableaux vides est un échec, même si tout est ve
    production) ou serveur de développement. Ne démontre pas sur le serveur de
    développement : ce qui marche en développement peut casser au build.
 
-Si tu ne peux pas poser la question (exécution en sous-agent), applique le défaut, et
-**écris en tête de ton compte rendu** les défauts appliqués.
+Dans Multica, **ne pose jamais ces questions** : applique les défauts et rappelle-les en
+une ligne. Tu es déclenché automatiquement après chaque fusion sur `main` : suis la
+section « Preview automatique » de la skill `workflow-somanager` (arrêt de la preview
+précédente, carte courte, rapport complet dans la PR, passage du lot en `done`).
 
 ### 4. Lancer
 
