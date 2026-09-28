@@ -154,13 +154,11 @@ sauf contradiction. Ne redemande **jamais** une validation déjà donnée dans l
 
 ## 8. Preview automatique après fusion
 
-- Travaille sur `main` à jour. Arrête d'abord la preview précédente **que tu as toi-même
-  lancée** (PID dans `~/.somanager-preview/pid`), puis relance et écris le nouveau PID.
-- Défauts, sans poser de question : base **conservée**, e-mails **redirigés** vers
-  `dbamba@soma-smart.com`, front **buildé et servi par le backend**.
-- Carte : `✅ FAIT — preview prête sur http://127.0.0.1:<port>` + une ligne « À ne pas
-  montrer : … » s'il y a des réserves. Rapport complet en commentaire de la PR fusionnée.
-- Anomalie bloquante (l'appli ne démarre pas, écran clé cassé) : crée un ticket
-  `Correctif — …` assigné au senior-developer, lié au lot, et passe quand même le lot en
-  `done` (le code est fusionné ; le correctif vit dans son propre ticket).
-- Puis : `multica issue status <KEY> done`.
+- Tout passe par `soma-agents/scripts/preview-somanager.sh` : dernière version de `main`
+  dans `~/somanager-preview/repo`, arrêt de la preview précédente et de tout ce qui écoute
+  sur 8012, base persistante `~/somanager-preview/data`, e-mails redirigés vers
+  `dbamba@soma-smart.com`. URL toujours **http://localhost:8012/**.
+- Le preview-runner poste une ligne (`✅ OK — …`), ou `⛔ KO` + journal et crée un ticket
+  `Correctif preview — …` pour le senior-developer. Dans les deux cas, le lot passe en
+  `done`.
+- Aucun autre agent ne lance de preview ni n'occupe le port 8012.
