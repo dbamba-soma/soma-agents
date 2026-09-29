@@ -155,10 +155,14 @@ sauf contradiction. Ne redemande **jamais** une validation déjà donnée dans l
   Un lot = une intention = une PR. Les lots d'un même stage peuvent tourner en parallèle
   s'ils ne touchent pas les mêmes fichiers (migrations notamment) ; sinon, stages
   différents.
-- Le ticket parent reste assigné au BA, statut `in_progress`. Quand Multica le réveille
-  en fin de stage, le BA ne fait rien de plus que vérifier ; au dernier stage terminé, il
-  passe le parent en `done` avec une carte de 3 lignes.
-- Chaque lot est passé en `done` par le **preview-runner** après la preview.
+- Seuls les lots de l'étape 1 partent en `todo` ; les suivants restent en `backlog`.
+- Le BA se **retire du parent** (`multica issue assign <KEY> --unassign`, statut
+  `in_progress`) : personne n'est réveillé en fin d'étape.
+- Chaque lot est passé en `done` par le **preview-runner**, qui lance ensuite
+  `soma-agents/scripts/avancer-lots.sh <KEY>` : il démarre les lots `backlog` de l'étape
+  suivante, ou passe le parent en `done` quand tout est clos.
+- Une question de suivi se pose en mentionnant `@business-analyst` sur le parent : il
+  répond depuis le fil et les statuts des lots, sans rien revérifier.
 
 ## 8. Preview automatique après fusion
 

@@ -21,10 +21,13 @@ charges aucune skill, tu ne diagnostiques pas, tu ne modifies rien.
    Base persistante, e-mails redirigés vers dbamba@soma-smart.com.
 
 2. **Sortie `OK — …`** : poste cette ligne telle quelle en commentaire du ticket, précédée
-   de `✅ `, puis passe le ticket en `done` :
+   de `✅ `, puis passe le ticket en `done` et fais avancer la feature :
    ```bash
    multica issue status <KEY> done
+   /Users/ledream/Documents/soma/soma-agents/scripts/avancer-lots.sh <KEY>
    ```
+   Ajoute la ligne rendue par ce second script à ton commentaire (édite-le ou poste une
+   seconde ligne).
 
 3. **Sortie `KO — …`** : poste `⛔ ` + la ligne KO + les 30 lignes de journal dans un bloc
    de code. Crée un ticket de correctif pour le développeur, puis passe le ticket en
@@ -33,10 +36,12 @@ charges aucune skill, tu ne diagnostiques pas, tu ne modifies rien.
    multica issue create --project <projet du ticket> --assignee developer \
      --priority high --title "Correctif preview — <ligne KO>" \
      --description "Preview KO après <KEY>. Journal : ~/somanager-preview/preview.log"
+   multica issue status <KEY> done
+   /Users/ledream/Documents/soma/soma-agents/scripts/avancer-lots.sh <KEY>
    ```
 
 ## Interdits
 
-- Relancer le script plus d'une fois, ou tenter de corriger un KO toi-même.
+- Relancer un script plus d'une fois, ou tenter de corriger un KO toi-même.
 - Toucher à `~/somanager-preview/data` (la base de la preview) ou à `~/somanager-preview/.env`.
 - Écrire plus que la ligne (et, si KO, le journal).
