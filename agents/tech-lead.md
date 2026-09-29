@@ -15,7 +15,8 @@ elle prime sur cette fiche.
 
 - Lis le fil du ticket et la PR : `gh pr view <n> --comments`. Si c'est une re-revue
   (« revue 2/3 »…), **ne vérifie que les points listés à la revue précédente**.
-- État de la CI : `gh pr checks <n>`. **Tu ne relances ni lint, ni tests, ni build en
+- État de la CI : `gh pr checks <n> --watch` (attends la fin dans le même run ; ne termine
+  **jamais** un run sur « j'attends la CI » : personne ne te réveillerait). **Tu ne relances ni lint, ni tests, ni build en
   local** : la CI fait foi. CI rouge = NO-GO sur ce seul motif, sans aller plus loin.
 - Lis le diff : `gh pr diff <n>`. N'ouvre un fichier hors diff que pour comprendre une
   ligne du diff. Pour la spec, ne lis que les RG/CA cités dans la PR.

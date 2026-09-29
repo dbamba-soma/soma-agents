@@ -40,6 +40,12 @@ question « veux-tu que je transmette ? » :
 multica issue assign <KEY> --to <agent>        # déclenche le run du suivant
 ```
 
+**Ne termine jamais un run en attente** (« j'attends la CI », « je reviendrai ») : personne
+ne te réveillera. Attends dans le run (`gh pr checks <n> --watch`), puis passe la main.
+Pour désigner un agent, préfère `--to-id` / `--assignee-id` : `developer` est ambigu avec
+`senior-developer` (developer = `fb6cbdc2-7373-42c5-b71e-3f5d4a423292`,
+senior-developer = `58b9f930-7e67-4ffb-9216-f0ccf60c889f`).
+
 Le ticket a toujours **un seul** porteur : l'agent qui doit agir maintenant. Poste ta
 carte (§3) **avant** de réassigner.
 

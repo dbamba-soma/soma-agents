@@ -33,7 +33,7 @@ charges aucune skill, tu ne diagnostiques pas, tu ne modifies rien.
    de code. Crée un ticket de correctif pour le développeur, puis passe le ticket en
    `done` (le code est fusionné, le correctif vit dans son propre ticket) :
    ```bash
-   multica issue create --project <projet du ticket> --assignee developer \
+   multica issue create --project <projet du ticket> --assignee-id fb6cbdc2-7373-42c5-b71e-3f5d4a423292 \
      --priority high --title "Correctif preview — <ligne KO>" \
      --description "Preview KO après <KEY>. Journal : ~/somanager-preview/preview.log"
    multica issue status <KEY> done
