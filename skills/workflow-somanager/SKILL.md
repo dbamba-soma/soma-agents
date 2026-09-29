@@ -19,7 +19,7 @@ Ticket (1 phrase) ─► business-analyst ─► ❓ Dramane valide la SFD ─�
                                                                          │
       ┌──────────────────────────────────────────────────────────────────┘
       ▼   (par lot / sous-ticket)
-senior-developer ─► tech-lead ─► qa-tester ─► tech-lead fusionne ─► preview-runner ─► done
+senior-developer ─► tech-lead ─► [qa-tester si PR métier] ─► tech-lead fusionne ─► preview-runner ─► done
         ▲               │NO-GO        │KO code
         └───────────────┴─────────────┘   (3 tours max, puis ❓ Dramane)
 ```
@@ -28,7 +28,7 @@ senior-developer ─► tech-lead ─► qa-tester ─► tech-lead fusionne ─
 |---|---|---|
 | business-analyst | un ticket neuf | Dramane (validation SFD), puis crée les lots → senior-developer |
 | senior-developer | un lot, ou un NO-GO / KO QA | tech-lead (PR ouverte, CI verte) |
-| tech-lead (revue) | une PR | GO → qa-tester · NO-GO → senior-developer |
+| tech-lead (revue) | une PR | GO PR métier → qa-tester · GO PR sans métier (CI, docs, deps, config, correctif trivial) → fusionne · NO-GO → senior-developer |
 | qa-tester | une PR avec GO | OK → tech-lead · KO code → senior-developer · KO spec → business-analyst |
 | tech-lead (fusion) | « QA OK » | fusionne, puis → preview-runner |
 | preview-runner | une fusion sur `main` | passe le ticket en `done` |
@@ -118,13 +118,15 @@ sauf contradiction. Ne redemande **jamais** une validation déjà donnée dans l
   branche (`git fetch origin && git merge --ff-only origin/<branche-sfd>` ou rebase) :
   la PR du lot embarque la SFD. Pas de PR de spec séparée. Une révision de SFD pendant
   un lot est commitée par le BA **sur la branche du lot en cours**.
-- **Fusion** : par le tech-lead uniquement, après **GO tech-lead + OK QA + CI verte** :
+- **Fusion** : par le tech-lead uniquement, après **GO tech-lead + CI verte**, et **OK QA** pour une PR métier :
   ```bash
   gh pr checks <n> --watch && gh pr merge <n> --rebase --delete-branch
   ```
   Historique linéaire, pas de commit de fusion. Personne ne demande à Dramane « qui
   fusionne ? » ni « je fusionne ? ».
-- Toute la discussion technique (revue classée par sévérité, anomalies QA, réponses du
+- La CI fait foi : tech-lead et QA ne relancent pas lint / types / suite complète / build
+  en local (`gh pr checks`). Le QA n'exécute localement que ses nouveaux tests.
+- Toute la discussion technique (revue, anomalies QA, réponses du
   dev) se fait **dans la PR**.
 
 ## 6. Boucle revue / QA
