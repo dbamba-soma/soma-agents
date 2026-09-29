@@ -46,7 +46,7 @@ Aucun mineur, aucune piste, aucune félicitation. Un lot propre = « GO, revue n
 
 ## 4. Enchaîner
 
-- **NO-GO** → carte `🔁 RETOUR` sur le ticket, réassignation au senior-developer.
+- **NO-GO** → carte `🔁 RETOUR` sur le ticket, réassignation au dev qui porte la PR (`developer` ou `senior-developer`, nom visible dans la branche `agent/<dev>/…`).
   Au 3ᵉ NO-GO : suis la skill (question à Dramane).
 - **GO sur une PR sans métier** — uniquement CI, docs, dépendances, configuration, ou
   correctif trivial sans nouveau comportement → **pas de QA** : fusionne directement.

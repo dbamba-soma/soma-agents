@@ -19,17 +19,17 @@ Ticket (1 phrase) ─► business-analyst ─► ❓ Dramane valide la SFD ─�
                                                                          │
       ┌──────────────────────────────────────────────────────────────────┘
       ▼   (par lot / sous-ticket)
-senior-developer ─► tech-lead ─► [qa-tester si PR métier] ─► tech-lead fusionne ─► preview-runner ─► done
+developer | senior-developer ─► tech-lead ─► [qa-tester si PR métier] ─► tech-lead fusionne ─► preview-runner ─► done
         ▲               │NO-GO        │KO code
         └───────────────┴─────────────┘   (3 tours max, puis ❓ Dramane)
 ```
 
 | Tu es | Tu reçois | Tu rends la main à |
 |---|---|---|
-| business-analyst | un ticket neuf | Dramane (validation SFD), puis crée les lots → senior-developer |
-| senior-developer | un lot, ou un NO-GO / KO QA | tech-lead (PR ouverte, CI verte) |
-| tech-lead (revue) | une PR | GO PR métier → qa-tester · GO PR sans métier (CI, docs, deps, config, correctif trivial) → fusionne · NO-GO → senior-developer |
-| qa-tester | une PR avec GO | OK → tech-lead · KO code → senior-developer · KO spec → business-analyst |
+| business-analyst | un ticket neuf | Dramane (validation SFD), puis crée les lots → developer ou senior-developer (§7) |
+| developer / senior-developer | un lot, ou un NO-GO / KO QA | tech-lead (PR ouverte, CI verte) |
+| tech-lead (revue) | une PR | GO PR métier → qa-tester · GO PR sans métier (CI, docs, deps, config, correctif trivial) → fusionne · NO-GO → le dev qui porte la PR (`developer` ou `senior-developer`, nom visible dans la branche `agent/<dev>/…`) |
+| qa-tester | une PR avec GO | OK → tech-lead · KO code → le dev qui porte la PR (`developer` ou `senior-developer`, nom visible dans la branche `agent/<dev>/…`) · KO spec → business-analyst |
 | tech-lead (fusion) | « QA OK » | fusionne, puis → preview-runner |
 | preview-runner | une fusion sur `main` | passe le ticket en `done` |
 
@@ -66,7 +66,7 @@ fusion — **tu tranches** sur l'option la plus simple et réversible, et tu l'�
 
 **Demande mineure** (bug, libellé, ajustement < ½ journée, sans changement de modèle
 de données ni de droits) : pas de SFD à valider. Le BA écrit un cadrage de 5 lignes
-dans le ticket, crée le lot et passe directement au senior-developer.
+dans le ticket, crée le lot et passe directement au developer.
 
 ## 3. Format des commentaires sur le ticket — la carte
 
@@ -109,12 +109,12 @@ sauf contradiction. Ne redemande **jamais** une validation déjà donnée dans l
 - `gh` est disponible et authentifié en écriture (`gh auth status`). Si la commande est
   introuvable, utilise `/Users/ledream/bin/gh`. N'écris jamais « la PR reste à créer
   d'un clic » : tu la crées.
-- **Une PR par lot**, ouverte par le senior-developer :
+- **Une PR par lot**, ouverte par le dev du lot :
   `gh pr create --base main --title "<type>(<portée>): Lot <n> — <titre>" --body …`.
-  Le corps contient : lien du ticket, SFD/STD concernées, mapping CA → test, les
+  Le corps contient : lien du ticket, SFD et RG/CA concernés, mapping CA → test, les
   `[CHOIX PAR DÉFAUT]`.
 - **La SFD voyage avec le code** : le BA pousse la SFD sur sa branche et indique son nom
-  dans la description de chaque lot. Le senior-developer du premier lot l'intègre à sa
+  dans la description de chaque lot. Le dev du premier lot l'intègre à sa
   branche (`git fetch origin && git merge --ff-only origin/<branche-sfd>` ou rebase) :
   la PR du lot embarque la SFD. Pas de PR de spec séparée. Une révision de SFD pendant
   un lot est commitée par le BA **sur la branche du lot en cours**.
@@ -144,8 +144,14 @@ sauf contradiction. Ne redemande **jamais** une validation déjà donnée dans l
 - À la validation de la SFD, le BA crée les lots en sous-tickets **séquencés par stage** :
   ```bash
   multica issue create --parent <KEY> --stage <n> --project <projet> \
-    --assignee senior-developer --title "Lot <n> — …" --description "SFD: <chemin> · branche: <branche-sfd> · CA couverts: …"
+    --assignee <developer|senior-developer> --title "Lot <n> — …" --description "SFD: <chemin> · branche: <branche-sfd> · CA couverts: …"
   ```
+  **Choix du dev** : `senior-developer` (modèle lourd) si le lot touche les droits, le
+  cloisonnement, une migration ou un connecteur externe ; `developer` (modèle standard)
+  pour tout le reste (écrans, règles simples, correctifs, CI, dépendances). Dans le doute
+  sur la sécurité : senior.
+  **Taille** : au plus ~400 lignes de diff hors tests et **une** migration par lot ; au-delà,
+  découpe en plusieurs lots. Pas de STD ni d'ADR : les choix techniques tiennent dans la PR.
   Un lot = une intention = une PR. Les lots d'un même stage peuvent tourner en parallèle
   s'ils ne touchent pas les mêmes fichiers (migrations notamment) ; sinon, stages
   différents.
@@ -161,6 +167,6 @@ sauf contradiction. Ne redemande **jamais** une validation déjà donnée dans l
   sur 8012, base persistante `~/somanager-preview/data`, e-mails redirigés vers
   `dbamba@soma-smart.com`. URL toujours **http://localhost:8012/**.
 - Le preview-runner poste une ligne (`✅ OK — …`), ou `⛔ KO` + journal et crée un ticket
-  `Correctif preview — …` pour le senior-developer. Dans les deux cas, le lot passe en
+  `Correctif preview — …` pour le developer. Dans les deux cas, le lot passe en
   `done`.
 - Aucun autre agent ne lance de preview ni n'occupe le port 8012.

@@ -40,7 +40,7 @@ anomalies en 3 lignes chacune : étapes, attendu (CA/RG), obtenu (sortie réelle
 
 Puis sur le ticket :
 - **OK** (tous les CA couverts, CI verte) → carte `✅`, réassignation au tech-lead.
-- **KO défaut de code** → carte `🔁 RETOUR`, réassignation au senior-developer.
+- **KO défaut de code** → carte `🔁 RETOUR`, réassignation au dev qui porte la PR (`developer` ou `senior-developer`, nom visible dans la branche `agent/<dev>/…`).
 - **KO défaut de spec** (CA intestable ou contradictoire) → réassignation au business-analyst.
 
 ## Interdits
